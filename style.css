@@ -1,3 +1,31 @@
-* {
-  color: blue;
+body {
+  background-color: aqua;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: antiquewhite;
+  width: 500px;
+  justify-content: center;
+  align-items: center;
+}
+
+.display {
+  outline: solid 1px brown;
+  height: 70px;
+  width: 400px;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+}
+
+.buttonRow1 {
+  grid-column: span 2;
+  outline: solid 1px red;
 }
