@@ -25,12 +25,12 @@ console.log(subtraction(number1, number2));
 console.log(multiplication(number1, number2));
 console.log(division(number1, number2));
 
-// const displayValue = (numButtons) => {
-//   display.textContent = numButtons.value;
-// };
+const array = Array.from(numButtons);
+console.log(numButtons);
+console.log(array);
 
 numButtons.forEach((button) => {
-  button.addEventListener("click", displayValue);
+  button.addEventListener("click", function () {
+    display.textContent = `${button.textContent}`;
+  });
 });
-console.log(typeof numButtons);
-console.log(numButtons);
