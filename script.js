@@ -3,6 +3,7 @@ let secondNumber = "";
 let currentOperation = null;
 let operatorSign = null;
 let clearCurrentOperation = false;
+let clearOperationLine = false;
 
 const display = document.querySelector(".display");
 const currentOperationScreen = document.getElementById(
@@ -60,13 +61,16 @@ const reset = () => {
 
 function insertNumber(number) {
   if (clearCurrentOperation === true) reset();
+  if (clearOperationLine === true) {
+    operationLine.textContent = "";
+    clearOperationLine = false;
+  }
   currentOperationScreen.textContent += number;
 }
 function secondOperation() {
   if (operatorSign === null || clearCurrentOperation) return;
 
   secondNumber = currentOperationScreen.textContent;
-  console.log("second number is now assigned");
   currentOperationScreen.textContent = operate(
     firstNumber,
     operatorSign,
@@ -80,10 +84,10 @@ function pickOperator(operator) {
   if (operatorSign !== null) secondOperation();
 
   operatorSign = operator;
-  console.log("operator sign is now changed");
   firstNumber = currentOperationScreen.textContent;
   operationLine.textContent = `${firstNumber} ${operatorSign}`;
   clearCurrentOperation = true;
+  clearOperationLine = false;
 }
 
 numButtons.forEach((button) => {
@@ -100,4 +104,8 @@ clear.addEventListener("click", function () {
   operationLine.textContent = "";
 });
 
-equalSign.addEventListener("click", secondOperation);
+equalSign.addEventListener("click", function () {
+  secondOperation();
+  clearCurrentOperation = true;
+  clearOperationLine = true;
+});
