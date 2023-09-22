@@ -1,17 +1,16 @@
-let number1 = 0;
-let number2 = 0;
-let result = 0;
-let temporarySign = "";
-let tempNumber = "";
-let operatorSign = "";
+let firstNumber = "";
+let secondNumber = "";
+let currentOperation = null;
+let operatorSign = null;
 let clearCurrentOperation = false;
-let resetNumber = false;
 
 const display = document.querySelector(".display");
-const currentOperation = document.getElementById("currentOperation");
+const currentOperationScreen = document.getElementById(
+  "currentOperationScreen"
+);
 const operationLine = document.getElementById("operationLine");
-const numButtons = document.querySelectorAll(".numbers");
-const operatorArray = document.querySelectorAll(".operator");
+const numButtons = document.querySelectorAll("[data-number]");
+const operatorArray = document.querySelectorAll("[data-operator");
 const division = document.getElementById("divide");
 const multiplication = document.getElementById("multiply");
 const addition = document.getElementById("add");
@@ -34,101 +33,71 @@ const divide = (number1, number2) => {
   return (result = number1 / number2);
 };
 
-const operate = (number1, number2) => {
-  switch (operatorSign) {
+const operate = (number1, sign, number2) => {
+  num1 = Number(number1);
+  num2 = Number(number2);
+
+  switch (sign) {
     case "/": {
-      divide(number1, number2);
-      break;
+      return divide(num1, num2);
     }
     case "x": {
-      multiply(number1, number2);
-      break;
+      return multiply(num1, num2);
     }
     case "+": {
-      add(number1, number2);
-      break;
+      return add(num1, num2);
     }
     case "-": {
-      subtract(number1, number2);
-      break;
+      return subtract(num1, num2);
     }
   }
 };
 
-const displayResult = () => {
-  operate(number1, number2);
-  operationLine.textContent += result;
-};
-
 const reset = () => {
-  number1 = 0;
-  number2 = 0;
-  result = 0;
+  currentOperationScreen.textContent = "";
   clearCurrentOperation = false;
-  operatorSign = "";
-  currentOperation.textContent = "";
-  operationLine.textContent = "";
 };
 
-//function for the operator buttons
-operatorArray.forEach((button) => {
-  button.addEventListener("click", function () {
-    clearCurrentOperation = true;
-    if (operationLine.textContent === "") {
-      number1 = Number(tempNumber);
-      tempNumber = "";
-      temporarySign = button.textContent;
-      operationLine.textContent += `${number1} ${temporarySign} `;
-    } else if (operationLine.textContent !== "") {
-      number2 = Number(tempNumber);
-      tempNumber = "";
-      currentOperation.textContent = "";
-      operate(number1, number2);
-      operationLine.textContent += `${number2} ${button.textContent} `;
-      currentOperation.textContent = `${result}`;
-      number1 = result;
-    }
+function insertNumber(number) {
+  if (clearCurrentOperation === true) reset();
+  currentOperationScreen.textContent += number;
+}
+function secondOperation() {
+  if (operatorSign === null || clearCurrentOperation) return;
 
-    operatorSign = button.textContent;
-  });
-});
+  secondNumber = currentOperationScreen.textContent;
+  console.log("second number is now assigned");
+  currentOperationScreen.textContent = operate(
+    firstNumber,
+    operatorSign,
+    secondNumber
+  );
+  operationLine.textContent = `${firstNumber} ${operatorSign} ${secondNumber}`;
+  operatorSign = null;
+}
 
-// function for the number keypad
+function pickOperator(operator) {
+  if (operatorSign !== null) secondOperation();
+
+  operatorSign = operator;
+  console.log("operator sign is now changed");
+  firstNumber = currentOperationScreen.textContent;
+  operationLine.textContent = `${firstNumber} ${operatorSign}`;
+  clearCurrentOperation = true;
+}
+
 numButtons.forEach((button) => {
-  button.addEventListener("click", function () {
-    // write a condition that checks if the operator buttons are clicked
-    if (operatorSign === "=") {
-      reset();
-    }
-
-    if ((number1 || number2) && clearCurrentOperation === true) {
-      clearCurrentOperation = false;
-      currentOperation.textContent = "";
-    }
-
-    tempNumber += button.textContent;
-    currentOperation.textContent += button.textContent;
-
-    // if (operationLine.textContent === "") {
-    //   tempNumber += button.textContent;
-    //   currentOperation.textContent += button.textContent;
-    // } else if (number1 || number2) {
-    //   // currentOperation.textContent = "";
-    //   tempNumber += button.textContent;
-    //   currentOperation.textContent += button.textContent;
-    // }
-
-    // tempNumber += button.textContent;
-    // currentOperation.textContent += button.textContent;
-  });
-  // add in a condition that if an operator sign exists in the operation line, clear the currentOperation number and replace with a new one
+  button.addEventListener("click", () => insertNumber(button.textContent));
+  reset();
 });
 
-equalSign.addEventListener("click", function () {});
-
-operationLine.textContent = "";
-currentOperation.textContent = "";
+operatorArray.forEach((button) => {
+  button.addEventListener("click", () => pickOperator(button.textContent));
+});
 
 clear.addEventListener("click", function () {
   reset();
+  operationLine.textContent = "";
 });
+
+equalSign.addEventListener("click", secondOperation);
