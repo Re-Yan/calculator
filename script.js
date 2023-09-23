@@ -12,34 +12,30 @@ const currentOperationScreen = document.getElementById(
 const operationLine = document.getElementById("operationLine");
 const numButtons = document.querySelectorAll("[data-number]");
 const operatorArray = document.querySelectorAll("[data-operator");
-const division = document.getElementById("divide");
-const multiplication = document.getElementById("multiply");
-const addition = document.getElementById("add");
-const subtraction = document.getElementById("subtract");
+const buttonArray = document.querySelectorAll(".btn");
 const decimal = document.getElementById("decimalPoint");
 const equalSign = document.getElementById("equals");
 const clear = document.getElementById("clear");
-const multiplyButton = document.getElementById("multiply");
-
-const add = (number1, number2) => {
-  return (result = number1 + number2);
-};
-const subtract = (number1, number2) => {
-  return (result = number1 - number2);
-};
-const multiply = (number1, number2) => {
-  return (result = number1 * number2);
-};
-const divide = (number1, number2) => {
-  return (result = number1 / number2);
-};
 
 const operate = (number1, sign, number2) => {
   num1 = Number(number1);
   num2 = Number(number2);
 
+  const add = (number1, number2) => {
+    return (result = number1 + number2);
+  };
+  const subtract = (number1, number2) => {
+    return (result = number1 - number2);
+  };
+  const multiply = (number1, number2) => {
+    return (result = number1 * number2);
+  };
+  const divide = (number1, number2) => {
+    return (result = number1 / number2);
+  };
+
   switch (sign) {
-    case "/": {
+    case "÷": {
       return divide(num1, num2);
     }
     case "x": {
@@ -89,6 +85,13 @@ function pickOperator(operator) {
   clearCurrentOperation = true;
   clearOperationLine = false;
 }
+
+buttonArray.forEach((button) => {
+  button.addEventListener("mouseover", function () {
+    console.log("a button has been hovered");
+    //insert blur effect here
+  });
+});
 
 numButtons.forEach((button) => {
   button.addEventListener("click", () => insertNumber(button.textContent));
