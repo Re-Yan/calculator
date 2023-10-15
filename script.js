@@ -112,3 +112,5 @@ equalSign.addEventListener("click", function () {
   clearCurrentOperation = true;
   clearOperationLine = true;
 });
+
+//test git push for my new device
